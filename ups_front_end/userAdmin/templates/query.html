@@ -1,0 +1,27 @@
+
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>{% block title %}{% endblock %}</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+</head>
+<body>
+    {% block content %}
+    <h2>User's Package Search Page</h2>
+    
+    {% for package in packageSuitable %}
+            <!-- list ride info-->
+            <fieldset>
+            <p> {{ forloop.counter }}. Your {{package.status}} package {{package.packageid}} to location ( {{package.destx}} , {{package.desty}} ).
+            </p>
+            <p> This package now contains {{package.itemNum}} item(s).</p>
+            </fieldset>
+    
+        {% endfor %}
+
+    {% endblock %}
+    <a href="{% url 'login' %}">logout</a><br>
+</body>

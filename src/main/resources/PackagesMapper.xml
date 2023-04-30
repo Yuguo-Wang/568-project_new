@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.example.Database.PackagesMapper">
+    <resultMap id="PackageResultMap" type="org.example.Database.Packages">
+        <result property="packageId" column="packageId"/>
+        <result property="truckId" column="truckId"/>
+        <result property="userId" column="userId"/>
+        <result property="itemNum" column="itemNum"/>
+        <result property="status" column="status"/>
+        <result property="destx" column="destx"/>
+        <result property="desty" column="desty"/>
+    </resultMap>
+
+    <!-- ... -->
+    <insert id="createPackagesTable">
+        CREATE TABLE IF NOT EXISTS packages(
+              packageId int  primary key,
+              truckId int default -1,
+              userId VARCHAR(255),
+              "itemNum" int default 0,
+              status VARCHAR(255),
+              destx int default  0,
+              desty int default 0,
+              foreign key (userId) references  "user"("userId") on update cascade on delete  set null,
+              foreign key (truckId) references truck (truckId)  on update cascade on delete  set null
+        )
+    </insert>
+
+    <update id="dropPackagesTable">
+        DROP TABLE IF EXISTS packages;
+    </update>
+
+
+    <select id="getPackageById" resultMap="PackageResultMap">
+        SELECT * FROM packages WHERE packageId = #{packageId}
+    </select>
+
+    <select id="getAllPackages" resultMap="PackageResultMap">
+        SELECT * FROM packages
+    </select>
+
+    <select id="getPackagesByTruckId" resultMap="PackageResultMap">
+        SELECT * FROM packages
+        WHERE truckId = #{truckId} AND status = 'waiting'
+    </select>
+
+    <insert id="insertPackage" parameterType="org.example.Database.Packages">
+        INSERT INTO packages (packageId, truckId, userId, "itemNum",status,  destx, desty)
+        VALUES (#{packageId}, #{truckId}, #{userId}, #{itemNum}, #{status}, #{destx}, #{desty})
+    </insert>
+
+    <update id="updatePackage" parameterType="org.example.Database.Packages">
+        UPDATE packages SET truckId = #{truckId}, userId = #{userId}, "itemNum" = #{itemNum}, "status" = #{status},
+                             "destx" = #{destx}, "desty" = #{desty}
+                        WHERE packageId = #{packageId}
+    </update>
+
+    <update id="updatePackageTruckId" parameterType="org.example.Database.Packages">
+        UPDATE packages SET truckId = #{truckId} WHERE packageId = #{packageId}
+    </update>
+
+    <update id="updatePackageStatusByTruckId">
+        UPDATE packages
+        SET status = #{status, jdbcType=VARCHAR}
+        WHERE truckid = #{truckId, jdbcType=INTEGER} AND status = 'waiting'
+    </update>
+
+    <delete id="deletePackage">
+        DELETE FROM packages WHERE packageId = #{packageId}
+    </delete>
+    <!-- ... -->
+
+</mapper>

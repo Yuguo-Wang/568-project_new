@@ -1,0 +1,23 @@
+<!-- templates/home.html -->
+<!DOCTYPE html>
+{% load static %}
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>{% block title %}Home{% endblock %}</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+</head>
+<body>
+  <header>
+    <h1>UPS</h1>
+  </header>
+</body>
+{% block content %}
+
+  <p>Hi! What do you want to do?</p><br>
+  {{ prompt }}
+  <a href="{% url 'query' userid%}">query</a><br>
+  <a href="{% url 'login' %}">logout</a><br>
+{% endblock %}

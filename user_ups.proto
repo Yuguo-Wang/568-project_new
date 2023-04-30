@@ -1,0 +1,41 @@
+syntax = "proto2";
+
+message UPackage{
+  required int64 id = 1;
+  required string status = 2;
+  required string description = 3;
+  required int32 itemCount = 4;
+  required int32 x = 5;
+  required int32 y = 6;
+}
+
+message UQuery{
+  optional int64 packageId = 1;
+  optional int32 userId = 2;
+}
+
+message UQueryResult{
+  repeated UPackage package = 1;
+  required int32 ack = 2;
+}
+
+
+message URedirect{
+  required int64 packageId = 1;
+  required int32 x = 2;
+  required int32 y = 3;
+}
+
+message URedirectResult{
+  required string message = 1;
+}
+
+message UUserRequest {
+  optional UQuery queryCommand = 1;
+  optional URedirect redirectCommand = 2;
+}
+
+message UUserResponse{
+  optional UQueryResult queryResult= 1;
+  optional URedirectResult redirectResult = 2;
+}
